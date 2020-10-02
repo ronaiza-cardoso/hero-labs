@@ -44,6 +44,10 @@ const GlobalStyles = createGlobalStyle`
       font-family: ${theme.font.family};
       font-size: ${theme.font.sizes.medium};
     }
+
+    text {
+      font-family: ${theme.font.family};
+    }
   `}
 `
 
