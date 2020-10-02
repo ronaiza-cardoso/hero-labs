@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
+import { ReactComponent as NounHero } from 'assets/icons/noun-hero.svg'
+import { ReactComponent as HeartFilled } from 'assets/icons/heart-filled.svg'
 
 import Search from 'components/Search'
 
@@ -22,6 +24,7 @@ function transformFavoriteHero(heroes) {
 function HeroList() {
   const [heroes, setHeroes] = useState()
   const [isLoading, setIsLoading] = useState()
+  const [toggleShowFavorites, setToggleShowFavorites] = useState(false)
 
   useEffect(() => fetchHeros(), [])
 
@@ -55,6 +58,27 @@ function HeroList() {
         </S.TextContainer>
 
         <Search placeholder="Procure por heróis" onChange={handleHeroSearch} />
+
+        <S.HeroActionsContainer>
+          <S.ResultTitle data-testid={heroes && heroes.length}>
+            Encontrados {heroes && heroes.length} heróis
+          </S.ResultTitle>
+
+          <S.ToggleContainer>
+            <S.HeroActionContainer isActive={!toggleShowFavorites}>
+              <NounHero />
+              Somente Favoritos
+            </S.HeroActionContainer>
+            <S.ToggleButton
+              isActive={toggleShowFavorites}
+              onClick={() => setToggleShowFavorites((prevState) => !prevState)}
+            />
+            <S.HeroActionContainer isActive={toggleShowFavorites}>
+              <HeartFilled />
+              Ordernar por nome
+            </S.HeroActionContainer>
+          </S.ToggleContainer>
+        </S.HeroActionsContainer>
       </S.HeaderContainer>
       <S.Main>
         {isLoading && <div>Loading...</div>}
