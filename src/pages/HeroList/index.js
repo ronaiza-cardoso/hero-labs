@@ -15,7 +15,7 @@ function transformFavoriteHero(heroes) {
     name,
     id,
     thumbnail,
-    isFavorite: true,
+    isFavorite: false,
   }))
 
   return newHeroes
@@ -45,6 +45,16 @@ function HeroList() {
     fetchHeros(search)
   }
 
+  function handleToggle() {
+    if (toggleShowFavorites) {
+      fetchHeros()
+    } else {
+      setHeroes(heroes.filter((item) => item.isFavorite))
+    }
+
+    setToggleShowFavorites((prevState) => !prevState)
+  }
+
   return (
     <S.Container>
       <S.HeaderContainer>
@@ -67,15 +77,16 @@ function HeroList() {
           <S.ToggleContainer>
             <S.HeroActionContainer isActive={!toggleShowFavorites}>
               <NounHero />
-              Somente Favoritos
+              Ordernar por nome - A/Z
             </S.HeroActionContainer>
             <S.ToggleButton
               isActive={toggleShowFavorites}
-              onClick={() => setToggleShowFavorites((prevState) => !prevState)}
+              onClick={() => handleToggle()}
+              data-testid="toggle-button"
             />
             <S.HeroActionContainer isActive={toggleShowFavorites}>
               <HeartFilled />
-              Ordernar por nome
+              Somente Favoritos
             </S.HeroActionContainer>
           </S.ToggleContainer>
         </S.HeroActionsContainer>
