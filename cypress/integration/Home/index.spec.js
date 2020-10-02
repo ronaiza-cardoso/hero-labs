@@ -10,6 +10,16 @@ context('<Home />', () => {
   })
 
   it('search input should trigger an api call', () => {
-    cy.get('input').type('hulk').get('[data-testid="Hulk"]').should('exist')
+    cy.get('input').type('hulk').get('[alt="Hulk"]').should('exist')
+  })
+
+  it('click on favorite button should favorite hero', () => {
+    cy.get('[aria-label="Favoritar"]')
+      .first()
+      .should('have.attr', 'aria-label', 'Favoritar')
+      .get('[aria-label="Favoritar"]')
+      .first()
+      .click()
+      .should('have.attr', 'aria-label', 'Favorito')
   })
 })

@@ -8,14 +8,19 @@ import Search from 'components/Search'
 
 import api from 'config/api'
 import Card from 'components/Card'
+import { FAVORITES_KEY } from 'config/constants'
 import * as S from './styles'
 
 function transformFavoriteHero(heroes) {
+  const favorites = new Set(
+    JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []
+  )
+
   const newHeroes = heroes.map(({ name, id, thumbnail }) => ({
     name,
     id,
     thumbnail,
-    isFavorite: false,
+    isFavorite: favorites.has(id),
   }))
 
   return newHeroes
@@ -53,6 +58,33 @@ function HeroList() {
     }
 
     setToggleShowFavorites((prevState) => !prevState)
+  }
+
+  function handleFavoriteHero({ id }, index) {
+    const storedFavorites = new Set(
+      JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []
+    )
+
+    if (storedFavorites.size === 5 && !storedFavorites.has(id)) {
+      // TODO: add toast
+      alert('é permitido favoritar apenas 5 personagens')
+      return
+    }
+
+    if (storedFavorites.has(id)) {
+      storedFavorites.delete(id)
+    } else {
+      storedFavorites.add(id)
+    }
+
+    const newHeroes = [...heroes]
+    newHeroes[index] = {
+      ...heroes[index],
+      isFavorite: !heroes[index].isFavorite,
+    }
+
+    setHeroes(newHeroes)
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...storedFavorites]))
   }
 
   return (
@@ -95,7 +127,13 @@ function HeroList() {
         {isLoading && <div>Loading...</div>}
         {heroes &&
           !isLoading &&
-          heroes.map((hero) => <Card {...hero} key={hero.id} />)}
+          heroes.map((hero, index) => (
+            <Card
+              {...hero}
+              key={hero.id}
+              onClick={() => handleFavoriteHero(hero, index)}
+            />
+          ))}
       </S.Main>
     </S.Container>
   )
