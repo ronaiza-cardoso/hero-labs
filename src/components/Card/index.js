@@ -6,17 +6,19 @@ import { ReactComponent as Heart } from 'assets/icons/heart.svg'
 
 import * as S from './styles'
 
-function Card({ thumbnail, name, isFavorite, onClick }) {
+function Card({ thumbnail, name, isFavorite, onFavorite, onGoToHero }) {
   return (
-    <S.Container data-testid={name}>
+    <S.Container>
       <S.Thumbnail
         src={`${thumbnail.path}.${thumbnail.extension}`}
         alt={name}
+        onClick={onGoToHero}
+        data-testid="hero-card"
       />
       <S.Content>
         <S.Name>{name}</S.Name>
         <S.Button
-          onClick={onClick}
+          onClick={onFavorite}
           aria-label={isFavorite ? 'Favorito' : 'Favoritar'}
         >
           {isFavorite ? <HeartFilled /> : <Heart />}
@@ -33,7 +35,8 @@ Card.propTypes = {
   }).isRequired,
   name: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onFavorite: PropTypes.func.isRequired,
+  onGoToHero: PropTypes.func.isRequired,
 }
 
 export default Card

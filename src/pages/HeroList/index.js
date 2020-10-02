@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import ReactRouterPropTypes from 'react-router-prop-types'
 
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
 import { ReactComponent as NounHero } from 'assets/icons/noun-hero.svg'
@@ -26,7 +27,7 @@ function transformFavoriteHero(heroes) {
   return newHeroes
 }
 
-function HeroList() {
+function HeroList({ history }) {
   const [heroes, setHeroes] = useState()
   const [isLoading, setIsLoading] = useState()
   const [toggleShowFavorites, setToggleShowFavorites] = useState(false)
@@ -87,6 +88,10 @@ function HeroList() {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify([...storedFavorites]))
   }
 
+  function handleGoToHeroDetails({ id }) {
+    history.push(`hero/${id}`)
+  }
+
   return (
     <S.Container>
       <S.HeaderContainer>
@@ -131,12 +136,17 @@ function HeroList() {
             <Card
               {...hero}
               key={hero.id}
-              onClick={() => handleFavoriteHero(hero, index)}
+              onFavorite={() => handleFavoriteHero(hero, index)}
+              onGoToHero={() => handleGoToHeroDetails(hero)}
             />
           ))}
       </S.Main>
     </S.Container>
   )
+}
+
+HeroList.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
 }
 
 export default HeroList

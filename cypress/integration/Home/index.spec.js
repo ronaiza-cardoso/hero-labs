@@ -22,4 +22,12 @@ context('<Home />', () => {
       .click()
       .should('have.attr', 'aria-label', 'Favorito')
   })
+
+  it('click on card should go to hero details', () => {
+    cy.get('[data-testid="hero-card"]')
+      .first()
+      .click()
+      .location('pathname')
+      .should('contains', '/hero')
+  })
 })
