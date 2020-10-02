@@ -5,7 +5,7 @@ context('<Home />', () => {
     cy.visit('/')
   })
 
-  it('cy.hash() - get the current URL hash', () => {
-    cy.hash().should('be.empty')
+  it('search input should trigger an api call', () => {
+    cy.get('input').type('hulk').get('[data-testid="Hulk"]').should('exist')
   })
 })

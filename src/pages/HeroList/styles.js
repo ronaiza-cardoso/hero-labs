@@ -33,3 +33,13 @@ export const H2 = styled.h2`
     margin-bottom: ${theme.spacings.xxsmall};
   `}
 `
+
+export const Main = styled.main`
+  ${({ theme }) => css`
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(auto-fill, minmax(auto, 20rem));
+    place-content: center;
+    gap: ${theme.spacings.xxsmall};
+  `}
+`
