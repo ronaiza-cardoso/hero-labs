@@ -48,6 +48,21 @@ const GlobalStyles = createGlobalStyle`
     text {
       font-family: ${theme.font.family};
     }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: ${theme.colors.lightGray};
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background: ${theme.colors.primary};
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: ${theme.colors.primary};
+    }
   `}
 `
 
