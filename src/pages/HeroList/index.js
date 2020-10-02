@@ -2,6 +2,7 @@ import React from 'react'
 
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
 
+import Search from 'components/Search'
 import * as S from './styles'
 
 function HeroList() {
@@ -16,6 +17,8 @@ function HeroList() {
             que você ama - e aqueles que você descobrirá em breve!
           </S.H2>
         </S.TextContainer>
+
+        <Search placeholder="Procure por heróis" />
       </S.HeaderContainer>
     </S.Container>
   )
