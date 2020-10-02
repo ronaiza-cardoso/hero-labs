@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
-  ${({ theme }) => css`
-    background: ${theme.colors.lightPink};
+  ${({ theme, backgroundColor }) => css`
+    background: ${backgroundColor};
     border-radius: ${theme.border.radius};
     padding: ${theme.font.sizes.small};
     margin-top: ${theme.font.sizes.large};

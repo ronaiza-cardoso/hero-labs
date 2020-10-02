@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
-
 import { useParams } from 'react-router-dom'
 
+import logo from 'assets/icons/logo-transparent-background.svg'
+
 import api from 'config/api'
+import Search from 'components/Search'
+import theme from 'styles/theme'
 import * as S from './styles'
 
 function HeroDetails() {
@@ -16,7 +19,21 @@ function HeroDetails() {
     fetchHero()
   }, [id])
 
-  return <S.Container>dddd</S.Container>
+  return (
+    <S.Container>
+      <S.HeaderContainer>
+        <S.LogoContainer>
+          <S.Logo src={logo} />
+          <S.LogoText>Search Heros</S.LogoText>
+        </S.LogoContainer>
+        <Search
+          placeholder="Procure por hérois"
+          backgroundColor={theme.colors.white}
+          onChange={() => console.log()}
+        />
+      </S.HeaderContainer>
+    </S.Container>
+  )
 }
 
 export default HeroDetails
