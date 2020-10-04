@@ -57,7 +57,7 @@ export const InfoContainer = styled.span`
       content: '${backgroundName}';
       position: absolute;
       left: 0;
-      font-size: clamp(20vw, 30vw, 15vw);
+      font-size: clamp(1vw, 15vw, 10vw);
       text-transform: uppercase;
       font-weight: 600;
       color: ${theme.colors.white};
@@ -154,6 +154,7 @@ export const Thumbnail = styled.div`
 export const LastComicsContainer = styled.div`
   ${({ theme }) => css`
     z-index: ${theme.layers.base};
+    position: relative;
   `}
 `
 
