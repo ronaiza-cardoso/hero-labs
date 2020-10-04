@@ -12,6 +12,7 @@ export default {
     light: 300,
     normal: 400,
     bold: 600,
+    lineHeight: 1.5,
     sizes: {
       xsmall: '1.2rem',
       small: '1.4rem',
@@ -51,5 +52,10 @@ export default {
       xlarge: '2.0rem',
       xxlarge: '2.8rem',
     },
+  },
+  layers: {
+    base: 10,
+    overlay: 30,
+    alwaysOnTop: 50,
   },
 }

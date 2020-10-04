@@ -107,5 +107,6 @@ export const Main = styled.main`
     grid-template-columns: repeat(auto-fill, minmax(auto, 20rem));
     place-content: center;
     gap: ${theme.spacings.xxsmall};
+    min-height: 300px;
   `}
 `
