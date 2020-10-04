@@ -95,7 +95,8 @@ export const ToggleButton = styled.button`
       border-radius: 1rem;
       top: 0.2rem;
       left: 0.5rem;
-      transform: ${isActive ? 'translateX(100%)' : 'translateX(0)'};
+      transform: ${isActive ? 'translateX(2.5rem)' : 'translateX(0)'};
+      transition: all 200ms ease-in-out;
     }
   `}
 `
