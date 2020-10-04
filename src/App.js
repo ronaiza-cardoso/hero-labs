@@ -12,7 +12,7 @@ import GlobalStyles from 'styles/global'
 
 function App() {
   return (
-    <Router>
+    <Router basename={window.location.pathname || ''}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         <Switch>
