@@ -31,7 +31,7 @@ function HeroDetails({ history }) {
       setIsLoading(true)
       const heroData = api.get(`/characters/${id}`)
       const comicsData = api.get(`/characters/${id}/comics`, {
-        params: { orderBy: 'onsaleDate' },
+        params: { orderBy: 'onsaleDate', limit: 10, format: 'comic' },
       })
 
       Promise.all([heroData, comicsData])
