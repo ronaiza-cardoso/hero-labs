@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { path } from 'ramda'
 import ReactRouterPropTypes from 'react-router-prop-types'
+import { toast } from 'react-toastify'
 
 import logo from 'assets/icons/logo-transparent-background.svg'
 
@@ -56,8 +57,7 @@ function HeroDetails({ history }) {
     )
 
     if (storedFavorites.size === 5 && storedFavorites.has(id)) {
-      // TODO: add toast
-      alert('é permitido favoritar apenas 5 personagens')
+      toast('é permitido favoritar apenas 5 personagens')
       return
     }
 

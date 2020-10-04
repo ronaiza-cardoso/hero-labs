@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactRouterPropTypes from 'react-router-prop-types'
+import { toast } from 'react-toastify'
 
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
 import { ReactComponent as NounHero } from 'assets/icons/noun-hero.svg'
@@ -68,8 +69,7 @@ function HeroList({ history }) {
     )
 
     if (storedFavorites.size === 5 && !storedFavorites.has(id)) {
-      // TODO: add toast
-      alert('é permitido favoritar apenas 5 personagens')
+      toast('é permitido favoritar apenas 5 personagens')
       return
     }
 

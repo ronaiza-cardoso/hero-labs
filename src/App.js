@@ -1,6 +1,8 @@
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 import HeroList from 'pages/HeroList'
 import HeroDetails from 'pages/HeroDetails'
@@ -17,6 +19,7 @@ function App() {
           <Route exact path="/" component={HeroList} />
           <Route exact path="/hero/:id" component={HeroDetails} />
         </Switch>
+        <ToastContainer />
       </ThemeProvider>
     </Router>
   )
