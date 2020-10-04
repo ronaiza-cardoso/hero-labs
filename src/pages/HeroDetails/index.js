@@ -73,7 +73,7 @@ function HeroDetails({ history }) {
 
   return (
     <S.Container>
-      <S.HeaderContainer onClick={() => history.goBack()}>
+      <S.HeaderContainer onClick={() => history.push('/')}>
         <S.LogoContainer>
           <S.Logo src={logo} />
           <S.LogoText>Search Heros</S.LogoText>
@@ -81,7 +81,7 @@ function HeroDetails({ history }) {
         <Search
           placeholder="Procure por hérois"
           backgroundColor={theme.colors.white}
-          onChange={() => history.goBack()}
+          onChange={() => history.push('/')}
         />
       </S.HeaderContainer>
       {isLoading ? (
