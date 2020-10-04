@@ -10,6 +10,7 @@ import Search from 'components/Search'
 import api from 'config/api'
 import Card from 'components/Card'
 import { FAVORITES_KEY } from 'config/constants'
+import Loading from 'components/Loading'
 import * as S from './styles'
 
 function transformFavoriteHero(heroes) {
@@ -128,19 +129,22 @@ function HeroList({ history }) {
           </S.ToggleContainer>
         </S.HeroActionsContainer>
       </S.HeaderContainer>
-      <S.Main>
-        {isLoading && <div>Loading...</div>}
-        {heroes &&
-          !isLoading &&
-          heroes.map((hero, index) => (
-            <Card
-              {...hero}
-              key={hero.id}
-              onFavorite={() => handleFavoriteHero(hero, index)}
-              onGoToHero={() => handleGoToHeroDetails(hero)}
-            />
-          ))}
-      </S.Main>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <S.Main>
+          {heroes &&
+            !isLoading &&
+            heroes.map((hero, index) => (
+              <Card
+                {...hero}
+                key={hero.id}
+                onFavorite={() => handleFavoriteHero(hero, index)}
+                onGoToHero={() => handleGoToHeroDetails(hero)}
+              />
+            ))}
+        </S.Main>
+      )}
     </S.Container>
   )
 }

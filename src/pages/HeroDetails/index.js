@@ -15,29 +15,33 @@ import api from 'config/api'
 import Search from 'components/Search'
 import theme from 'styles/theme'
 import { FAVORITES_KEY } from 'config/constants'
+import Loading from 'components/Loading'
 import * as S from './styles'
 
 function HeroDetails({ history }) {
   const [hero, setHero] = useState()
   const [lastComics, setLastComics] = useState()
+  const [isLoading, setIsLoading] = useState()
   const [isHeroFavorite, setIsHeroFavorite] = useState()
   const { id } = useParams()
 
   useEffect(() => {
-    function fetchHero() {
-      api
-        .get(`/characters/${id}`)
-        .then(({ data }) => setHero(path(['data', 'results', 0], data)))
+    function fetchPageData() {
+      setIsLoading(true)
+      const heroData = api.get(`/characters/${id}`)
+      const comicsData = api.get(`/characters/${id}/comics`, {
+        params: { orderBy: 'onsaleDate' },
+      })
+
+      Promise.all([heroData, comicsData])
+        .then((res) => {
+          setHero(path([0, 'data', 'data', 'results', 0], res))
+          setLastComics(path([1, 'data', 'data', 'results'], res))
+        })
+        .finally(() => setIsLoading(false))
     }
 
-    function fetchLastComics() {
-      api
-        .get(`/characters/${id}/comics`, { params: { orderBy: 'onsaleDate' } })
-        .then(({ data }) => setLastComics(path(['data', 'results'], data)))
-    }
-
-    fetchHero()
-    fetchLastComics()
+    fetchPageData()
   }, [id])
 
   useEffect(() => {
@@ -80,76 +84,80 @@ function HeroDetails({ history }) {
           onChange={() => history.goBack()}
         />
       </S.HeaderContainer>
-      <S.Main>
-        <S.InfoContainer backgroundName={path(['name'], hero)}>
-          <S.TextContainer>
-            <S.TitleContainer onClick={handleFavorite}>
-              <S.Title>{path(['name'], hero)}</S.Title>
-              {isHeroFavorite ? <HeartFilled /> : <Heart />}
-            </S.TitleContainer>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <S.Main>
+          <S.InfoContainer backgroundName={path(['name'], hero)}>
+            <S.TextContainer>
+              <S.TitleContainer onClick={handleFavorite}>
+                <S.Title>{path(['name'], hero)}</S.Title>
+                {isHeroFavorite ? <HeartFilled /> : <Heart />}
+              </S.TitleContainer>
 
-            <S.P>
-              {path(['description'], hero) ||
-                'Ainda estamos trabalhando nesse registro'}
-            </S.P>
+              <S.P>
+                {path(['description'], hero) ||
+                  'Ainda estamos trabalhando nesse registro'}
+              </S.P>
 
-            <S.ContentDetailsWrapper>
-              <S.ContentContainer>
-                <S.H2>Quadrinhos</S.H2>
-                <S.HeroDetailsContent>
-                  <Book /> <S.H2>{path(['comics', 'available'], hero)}</S.H2>
-                </S.HeroDetailsContent>
-              </S.ContentContainer>
+              <S.ContentDetailsWrapper>
+                <S.ContentContainer>
+                  <S.H2>Quadrinhos</S.H2>
+                  <S.HeroDetailsContent>
+                    <Book /> <S.H2>{path(['comics', 'available'], hero)}</S.H2>
+                  </S.HeroDetailsContent>
+                </S.ContentContainer>
 
-              <S.ContentContainer>
-                <S.H2>Filmes</S.H2>
-                <S.HeroDetailsContent>
-                  <Video />
-                  <S.H2 isDisabled>--</S.H2>
-                </S.HeroDetailsContent>
-              </S.ContentContainer>
-            </S.ContentDetailsWrapper>
+                <S.ContentContainer>
+                  <S.H2>Filmes</S.H2>
+                  <S.HeroDetailsContent>
+                    <Video />
+                    <S.H2 isDisabled>--</S.H2>
+                  </S.HeroDetailsContent>
+                </S.ContentContainer>
+              </S.ContentDetailsWrapper>
 
-            <S.HeroLineInformation>
-              <S.H2>Rating:</S.H2>
-              {Array(5)
-                .fill(0)
-                .map((item, i) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <StarFilledDisabled key={`${item}-${i}`} />
+              <S.HeroLineInformation>
+                <S.H2>Rating:</S.H2>
+                {Array(5)
+                  .fill(0)
+                  .map((item, i) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <StarFilledDisabled key={`${item}-${i}`} />
+                  ))}
+              </S.HeroLineInformation>
+              <S.HeroLineInformation>
+                <S.H2>Ultimo quadrinho:</S.H2>
+                <S.H2 isDisabled>--</S.H2>
+              </S.HeroLineInformation>
+            </S.TextContainer>
+            <S.Thumbnail
+              src={`${path(['thumbnail', 'path'], hero)}.${path(
+                ['thumbnail', 'extension'],
+                hero
+              )}`}
+            />
+          </S.InfoContainer>
+          <S.LastComicsContainer>
+            <S.LastComicsTitle>Últimos lançamentos</S.LastComicsTitle>
+
+            <S.LastComicsContentContainer>
+              {lastComics &&
+                lastComics.map((comic) => (
+                  <S.ComicCard key={comic.id}>
+                    <S.ComicPhoto
+                      src={`${path(['thumbnail', 'path'], comic)}.${path(
+                        ['thumbnail', 'extension'],
+                        comic
+                      )}`}
+                    />
+                    <S.ComicTitle>{comic.title}</S.ComicTitle>
+                  </S.ComicCard>
                 ))}
-            </S.HeroLineInformation>
-            <S.HeroLineInformation>
-              <S.H2>Ultimo quadrinho:</S.H2>
-              <S.H2 isDisabled>--</S.H2>
-            </S.HeroLineInformation>
-          </S.TextContainer>
-          <S.Thumbnail
-            src={`${path(['thumbnail', 'path'], hero)}.${path(
-              ['thumbnail', 'extension'],
-              hero
-            )}`}
-          />
-        </S.InfoContainer>
-        <S.LastComicsContainer>
-          <S.LastComicsTitle>Últimos lançamentos</S.LastComicsTitle>
-
-          <S.LastComicsContentContainer>
-            {lastComics &&
-              lastComics.map((comic) => (
-                <S.ComicCard key={comic.id}>
-                  <S.ComicPhoto
-                    src={`${path(['thumbnail', 'path'], comic)}.${path(
-                      ['thumbnail', 'extension'],
-                      comic
-                    )}`}
-                  />
-                  <S.ComicTitle>{comic.title}</S.ComicTitle>
-                </S.ComicCard>
-              ))}
-          </S.LastComicsContentContainer>
-        </S.LastComicsContainer>
-      </S.Main>
+            </S.LastComicsContentContainer>
+          </S.LastComicsContainer>
+        </S.Main>
+      )}
     </S.Container>
   )
 }
