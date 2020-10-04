@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { path } from 'ramda'
+import ReactRouterPropTypes from 'react-router-prop-types'
 
 import logo from 'assets/icons/logo-transparent-background.svg'
 
@@ -16,7 +17,7 @@ import theme from 'styles/theme'
 import { FAVORITES_KEY } from 'config/constants'
 import * as S from './styles'
 
-function HeroDetails() {
+function HeroDetails({ history }) {
   const [hero, setHero] = useState()
   const [lastComics, setLastComics] = useState()
   const [isHeroFavorite, setIsHeroFavorite] = useState()
@@ -68,7 +69,7 @@ function HeroDetails() {
 
   return (
     <S.Container>
-      <S.HeaderContainer>
+      <S.HeaderContainer onClick={() => history.goBack()}>
         <S.LogoContainer>
           <S.Logo src={logo} />
           <S.LogoText>Search Heros</S.LogoText>
@@ -76,7 +77,7 @@ function HeroDetails() {
         <Search
           placeholder="Procure por hérois"
           backgroundColor={theme.colors.white}
-          onChange={() => console.log()}
+          onChange={() => history.goBack()}
         />
       </S.HeaderContainer>
       <S.Main>
@@ -151,6 +152,10 @@ function HeroDetails() {
       </S.Main>
     </S.Container>
   )
+}
+
+HeroDetails.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
 }
 
 export default HeroDetails
