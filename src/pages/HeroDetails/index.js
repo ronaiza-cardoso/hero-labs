@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { path } from 'ramda'
 
@@ -19,6 +19,7 @@ import * as S from './styles'
 function HeroDetails() {
   const [hero, setHero] = useState()
   const [lastComics, setLastComics] = useState()
+  const [isHeroFavorite, setIsHeroFavorite] = useState()
   const { id } = useParams()
 
   useEffect(() => {
@@ -38,9 +39,31 @@ function HeroDetails() {
     fetchLastComics()
   }, [id])
 
-  function isFavorite() {
+  useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []
-    return favorites.includes(path(['results', 0, 'id'], hero))
+    setIsHeroFavorite(favorites.includes(path(['id'], hero)))
+  }, [hero])
+
+  function handleFavorite() {
+    const numberId = Number(id)
+    const storedFavorites = new Set(
+      JSON.parse(localStorage.getItem(FAVORITES_KEY)) || []
+    )
+
+    if (storedFavorites.size === 5 && storedFavorites.has(id)) {
+      // TODO: add toast
+      alert('é permitido favoritar apenas 5 personagens')
+      return
+    }
+
+    if (storedFavorites.has(numberId)) {
+      storedFavorites.delete(numberId)
+    } else {
+      storedFavorites.add(numberId)
+    }
+
+    setIsHeroFavorite(storedFavorites.has(hero.id))
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...storedFavorites]))
   }
 
   return (
@@ -59,9 +82,9 @@ function HeroDetails() {
       <S.Main>
         <S.InfoContainer backgroundName={path(['name'], hero)}>
           <S.TextContainer>
-            <S.TitleContainer>
+            <S.TitleContainer onClick={handleFavorite}>
               <S.Title>{path(['name'], hero)}</S.Title>
-              {isFavorite() ? <HeartFilled /> : <Heart />}
+              {isHeroFavorite ? <HeartFilled /> : <Heart />}
             </S.TitleContainer>
 
             <S.P>
@@ -91,6 +114,7 @@ function HeroDetails() {
               {Array(5)
                 .fill(0)
                 .map((item, i) => (
+                  // eslint-disable-next-line react/no-array-index-key
                   <StarFilledDisabled key={`${item}-${i}`} />
                 ))}
             </S.HeroLineInformation>
