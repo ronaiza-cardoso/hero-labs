@@ -45,4 +45,5 @@ Roda os testes e2e com Cypress.
 ### `yarn deploy`
 Faz deploy para a aplicação na página do git hub pages.
 
-
+### Live Site
+Você pode conferir a aplicação rodando aqui: https://ronaiza-cardoso.github.io/hero-labs/
