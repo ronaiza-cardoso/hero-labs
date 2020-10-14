@@ -1,24 +1,26 @@
-name: Build and Deploy
+name: End-to-end tests
 on: [push]
 jobs:
-  build-and-deploy:
+  cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1 
-        env:
-          REACT_APP_MARVEL_PUB_KEY: ${{ secrets.REACT_APP_MARVEL_PUB_KEY }}
-          REACT_APP_MARVEL_PRIVATE_KEY: ${{ secrets.REACT_APP_MARVEL_PRIVATE_KEY }}
-    
-      - name: Install, test and build 🔧
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: npm install, run server
         run: |
           npm install
-          npm run start:e2e
+          npm run start:e2e --token ${{ secrets.REACT_APP_MARVEL_PUB_KEY }} ${{ secrets.REACT_APP_MARVEL_PRIVATE_KEY }}
           npm run build
+        env:
+          CI: true
+          REACT_APP_MARVEL_PUB_KEY: ${{ secrets.REACT_APP_MARVEL_PUB_KEY }}
+          REACT_APP_MARVEL_PRIVATE_KEY: ${{ secrets.REACT_APP_MARVEL_PRIVATE_KEY }}
+
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.6.1
+        uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
+          BRANCH: gh-pages 
           FOLDER: build 
-          CLEAN: true 
+          CLEAN: true
