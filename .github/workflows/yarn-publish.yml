@@ -13,6 +13,7 @@ jobs:
       - name: Install, test and build 🔧
         run: |
           npm install
+          npm run start:e2e
           npm run build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.6.1
